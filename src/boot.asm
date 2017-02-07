@@ -20,6 +20,16 @@ error:
 	mov byte [0xb800a], al
 	hlt
 
+
+; define function to checdk whether booted via multiboot-compliant bootloader
+check_multiboot:
+	cmp eax, 0x36d76289 ; check for multiboot magic number in register 'eax'
+	jne .no_multiboot
+	ret
+.no_multiboot:
+	mov al, "0" ; error code 0: no multiboot
+	jmp error
+
 ; reserve some bytes for the stack
 section .bss
 stack_bottom:
