@@ -3,6 +3,9 @@ global start
 section .text ; default section for executable code
 bits 32 ; states that the following instructions are 32-bit
 start:
+	; create stack pointer (register 'esp' points to top of stack)
+	; nb. stack grows downwars from stack_top
+	mov esp, stack_top
 	; print 'OK'
 	mov dword [0xb8000], 0x2f4b2f4f ; move 0x2f... to address b8000
 	hlt ; halt
@@ -16,3 +19,9 @@ error:
 	; Error message.
 	mov byte [0xb800a], al
 	hlt
+
+; reserve some bytes for the stack
+section .bss
+stack_bottom:
+	resb 64
+stack_top: 
