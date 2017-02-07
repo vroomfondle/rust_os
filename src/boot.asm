@@ -6,6 +6,13 @@ start:
 	; create stack pointer (register 'esp' points to top of stack)
 	; nb. stack grows downwars from stack_top
 	mov esp, stack_top
+
+	; check bootloader
+	call check_multiboot
+	; check CPU abilities
+	call check_cpuid
+	call check_long_mode
+
 	; print 'OK'
 	mov dword [0xb8000], 0x2f4b2f4f ; move 0x2f... to address b8000
 	hlt ; halt
